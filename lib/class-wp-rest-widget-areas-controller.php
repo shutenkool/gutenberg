@@ -160,15 +160,14 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 		}
 		if ( isset( $request['content'] ) && is_string( $request['content'] ) ) {
 			$sidebars = wp_get_sidebars_widgets();
-			$sidebar = $sidebars_items[ $sidebar_id ];
-			$items = array();
-			$post_id = wp_insert_post(
+			$sidebar  = $sidebars[ $sidebar_id ];
+			$post_id  = wp_insert_post(
 				array(
 					'ID'           => is_numeric( $sidebar ) ? $sidebar : 0,
 					'post_content' => $request['content'],
 				)
 			);
-			if( ! is_numeric( $sidebar ) ) {
+			if ( ! is_numeric( $sidebar ) ) {
 				wp_set_sidebars_widgets(
 					array_merge(
 						$sidebars,
