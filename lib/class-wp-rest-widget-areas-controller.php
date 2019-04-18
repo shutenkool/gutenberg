@@ -118,26 +118,23 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 
 		$sidebar = $wp_registered_sidebars[ $sidebar_id ];
 		$content = '';
-		$blocks  = array();
 
 		$sidebars_items = wp_get_sidebars_widgets();
 		if ( is_numeric( $sidebars_items[ $sidebar_id ] ) ) {
 			$post    = get_post( $sidebars_items[ $sidebar_id ] );
 			$content = apply_filters( 'the_content', $post->post_content );
 		} elseif ( ! empty( $sidebars_items[ $sidebar_id ] ) ) {
+			$blocks  = array();
 			foreach ( $sidebars_items[ $sidebar_id ] as $item ) {
-				if ( is_array( $item ) && isset( $item['blockName'] ) ) {
-					$blocks[] = $item;
-				} else {
-					$blocks[] = array(
-						'blockName' => 'core/legacy-widget',
-						'attrs'     => array(
-							'identifier' => $item,
-							'instance'   => $this->get_sidebars_widget_instance( $sidebar, $item ),
-						),
-						'innerHTML' => '',
-					);
-				}
+				$widget_class = $this->get_widget_class( $item );
+				$blocks[]     = array(
+					'blockName' => 'core/legacy-widget',
+					'attrs'     => array(
+						'identifier' => $widget_class ? $widget_class : $item,
+						'instance'   => $this->get_sidebars_widget_instance( $sidebar, $item ),
+					),
+					'innerHTML' => '',
+				);
 			}
 			$content = serialize_blocks( $blocks );
 		}
@@ -223,6 +220,16 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 		}
 
 		return $instance;
+	}
+
+	private function get_widget_class( $widget_id ) {
+		global $wp_registered_widgets;
+		if (
+			isset( $wp_registered_widgets[ $widget_id ]['callback'][0] ) &&
+			$wp_registered_widgets[ $widget_id ]['callback'][0] instanceof WP_Widget
+		) {
+			return get_class( $wp_registered_widgets[ $widget_id ]['callback'][0] );
+		}
 	}
 
 	private function get_widget_info( $id ) {
