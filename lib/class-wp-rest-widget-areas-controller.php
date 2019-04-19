@@ -116,13 +116,13 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 			);
 		}
 
-		$sidebar = $wp_registered_sidebars[ $sidebar_id ];
-		$content = '';
+		$sidebar        = $wp_registered_sidebars[ $sidebar_id ];
+		$content_string = '';
 
 		$sidebars_items = wp_get_sidebars_widgets();
 		if ( is_numeric( $sidebars_items[ $sidebar_id ] ) ) {
-			$post    = get_post( $sidebars_items[ $sidebar_id ] );
-			$content = apply_filters( 'the_content', $post->post_content );
+			$post           = get_post( $sidebars_items[ $sidebar_id ] );
+			$content_string = $post->post_content; apply_filters( 'the_content', $post->post_content );
 		} elseif ( ! empty( $sidebars_items[ $sidebar_id ] ) ) {
 			$blocks  = array();
 			foreach ( $sidebars_items[ $sidebar_id ] as $item ) {
@@ -136,12 +136,19 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 					'innerHTML' => '',
 				);
 			}
-			$content = serialize_blocks( $blocks );
+			$content_string = serialize_blocks( $blocks );
 		}
 
 		return array_merge(
 			$sidebar,
-			array( 'content' => $content )
+			array(
+				'content' => array(
+					'raw'           => $content_string,
+					/** This filter is documented in wp-includes/post-template.php */
+					'rendered'      => apply_filters( 'the_content', $content_string ),
+					'block_version' => block_version( $content_string ),
+				),
+			)
 		);
 	}
 
@@ -162,6 +169,7 @@ class WP_REST_Widget_Areas extends WP_REST_Controller {
 				array(
 					'ID'           => is_numeric( $sidebar ) ? $sidebar : 0,
 					'post_content' => $request['content'],
+					'post_type'    => 'wp_area',
 				)
 			);
 			if ( ! is_numeric( $sidebar ) ) {
