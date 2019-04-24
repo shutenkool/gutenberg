@@ -28,7 +28,7 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { mediaUpload } from '@wordpress/editor';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -160,7 +160,7 @@ class FileEdit extends Component {
 		} );
 
 		return (
-			<Fragment>
+			<>
 				<FileBlockInspector
 					hrefs={ { href, textLinkHref, attachmentPage } }
 					{ ...{
@@ -228,7 +228,7 @@ class FileEdit extends Component {
 						</ClipboardButton>
 					}
 				</div>
-			</Fragment>
+			</>
 		);
 	}
 }

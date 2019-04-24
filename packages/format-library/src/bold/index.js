@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { toggleFormat } from '@wordpress/rich-text';
 import { RichTextToolbarButton, RichTextShortcut, __unstableRichTextInputEvent } from '@wordpress/block-editor';
 
@@ -17,7 +16,7 @@ export const bold = {
 		const onToggle = () => onChange( toggleFormat( value, { type: name } ) );
 
 		return (
-			<Fragment>
+			<>
 				<RichTextShortcut
 					type="primary"
 					character="b"
@@ -36,7 +35,7 @@ export const bold = {
 					inputType="formatBold"
 					onInput={ onToggle }
 				/>
-			</Fragment>
+			</>
 		);
 	},
 };

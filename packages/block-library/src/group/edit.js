@@ -6,7 +6,6 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { Fragment } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -34,7 +33,7 @@ function GroupEdit( {
 	} );
 
 	return (
-		<Fragment>
+		<>
 			<InspectorControls>
 				<PanelColorSettings
 					title={ __( 'Color Settings' ) }
@@ -52,7 +51,7 @@ function GroupEdit( {
 					renderAppender={ ! hasInnerBlocks && renderAppender }
 				/>
 			</div>
-		</Fragment>
+		</>
 	);
 }
 
