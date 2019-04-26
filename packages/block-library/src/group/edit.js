@@ -39,7 +39,9 @@ function GroupEdit( { className, setBackgroundColor, backgroundColor } ) {
 				/>
 			</InspectorControls>
 			<div className={ classes } style={ styles }>
-				<InnerBlocks />
+				<div className="wp-block-group__inner-container">
+					<InnerBlocks />
+				</div>
 			</div>
 		</Fragment>
 	);
