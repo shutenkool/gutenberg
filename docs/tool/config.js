@@ -62,5 +62,5 @@ module.exports = {
 		.map( ( fileName ) => fileName.split( '/' )[ 1 ] ),
 
 	tocFileName: path.resolve( __dirname, '../toc.json' ),
-	manifestOutput: path.resolve( __dirname, '../manifest.json' ),
+	manifestOutput: path.resolve( __dirname, '../manifest-devhub.json' ),
 };
